@@ -16,31 +16,32 @@ lam_oii1 = 3726.032
 lam_oii2 = 3728.815
 
 #abre os arquivos .fits
-file_ir = 'J2221_SCI_SLIT_FLUX_MERGE1D_NIR.fits'
-file_vis = 'J2221_SCI_SLIT_FLUX_MERGE1D_VIS.fits'
+file_h = 'spec_h_calib.fits'
+file_j1 = 'spec_j1_calib.fits'
+file_j2 = 'spec_j2_calib.fits'
 
 #extrai o cabeçalho, os dados e os erros
-hdu = fits.open(file_ir)
-head = hdu[0].header
-data = hdu[0].data
-sig = hdu[1].data/1e-19
+hdu_j2 = fits.open(file_j2)
+head_j2 = hdu_j2[0].header
+data_j2 = hdu_j2[0].data
+#sig_j1 = hdu_j1[1].data/1e-19
 
-cube = data/1e-19
+cube_j2 = data_j2/1e-19
 
-n = len(data)
-l0 = head['CRVAL1']
-step = head['CDELT1']
-unit = head['CUNIT1']
+n = len(data_j2)
+l0 = head_j2['CRVAL1']
+step = head_j2['CDELT1']
+#unit = head_j1['CUNIT1']
 
 #cria um vetor com comprimentos de onda
-if unit == 'Angstrom':
-   lam = np.arange(n)*step + l0
-else:
-    if unit == 'nm':
-        lam = np.arange(n)*step*10 + l0*10
+#if unit == 'Angstrom':
+lam = np.arange(n)*step + l0
+#else:
+#    if unit == 'nm':
+#        lam = np.arange(n)*step*10 + l0*10
 
 #centro das linhas observadas
-cen_oiii1 = 16772
+cen_oiii1 = 12608
 cen_oiii2 = lam_oiii2 + (lam_oiii2/lam_oiii1)*(cen_oiii1 - lam_oiii1)
 cen_hbeta = lam_hbeta + (lam_hbeta/lam_oiii1)*(cen_oiii1 - lam_oiii1)
 cen_halpha = lam_halpha + (lam_halpha/lam_oiii1)*(cen_oiii1 - lam_oiii1)
@@ -57,8 +58,8 @@ imin_oiii = (np.abs(lam - min_oiii)).argmin()
 imax_oiii = (np.abs(lam - max_oiii)).argmin()
 
 lam1 = lam[imin_oiii : imax_oiii]
-cube1 = cube[imin_oiii : imax_oiii]
-sig1 = sig[imin_oiii : imax_oiii]
+cube1 = cube_j2[imin_oiii : imax_oiii]
+#sig1 = sig_j1[imin_oiii : imax_oiii]
 
 #cria janela do H beta
 min_hbeta = cen_hbeta - 50
@@ -68,19 +69,39 @@ imin_hbeta = (np.abs(lam - min_hbeta)).argmin()
 imax_hbeta = (np.abs(lam - max_hbeta)).argmin()
 
 lam2 = lam[imin_hbeta : imax_hbeta]
-cube2 = cube[imin_hbeta : imax_hbeta]
-sig2 = sig[imin_hbeta : imax_hbeta]
+cube2 = cube_j2[imin_hbeta : imax_hbeta]
+#sig2 = sig_j1[imin_hbeta : imax_hbeta]
 
 #cria janela do NII
 min_nii = cen_nii2 - 50
 max_nii = cen_nii1 + 50
 
-imin_nii = (np.abs(lam - min_nii)).argmin()
-imax_nii = (np.abs(lam - max_nii)).argmin()
+if min_nii > 14000:
+    hdu_h = fits.open(file_h)
+    head_h = hdu_h[0].header
+    data_h = hdu_h[0].data
+    
+    cube_h = data_h/1e-19
+    
+    n_h = len(cube_h)
+    l0_h = head_h['CRVAL1']
+    step_h = head_h['CDELT1']
+    
+    lam_h = np.arange(n_h)*step_h + l0_h
+    
 
-lam3 = lam[imin_nii : imax_nii]
-cube3 = cube[imin_nii : imax_nii]
-sig3 = sig[imin_nii : imax_nii]
+    imin_nii = (np.abs(lam_h - min_nii)).argmin()
+    imax_nii = (np.abs(lam_h - max_nii)).argmin()
+
+    lam3 = lam_h[imin_nii : imax_nii]
+    cube3 = cube_h[imin_nii : imax_nii]
+else:    
+    imin_nii = (np.abs(lam - min_nii)).argmin()
+    imax_nii = (np.abs(lam - max_nii)).argmin()
+
+    lam3 = lam[imin_nii : imax_nii]
+    cube3 = cube_j2[imin_nii : imax_nii]
+#sig3 = sig_j1[imin_nii : imax_nii]
 
 #cria janela do OII
 min_oii = cen_oii1 - 50
@@ -88,30 +109,31 @@ max_oii = cen_oii2 + 50
 
 #abre o arquivo do espectro visual se as linhas de OII cairem fora do infravermelho
 if min_oii < 10000:
-    hdu_vis = fits.open(file_vis)
-    head_vis = hdu_vis[0].header
-    data_vis = hdu_vis[0].data
-    sig_vis = hdu_vis[1].data/1e-19
+    hdu_j2 = fits.open(file_j2)
+    head_j2 = hdu_j2[0].header
+    data_j2 = hdu_j2[0].data
+#    sig_j2 = hdu_j2[1].data/1e-19
     
-    cube_vis = data_vis/1e-19
+    cube_j2 = data_j2/1e-19
+    cube_j2[0] = 0
     
-    n_vis = len(cube_vis)
-    l0_vis = head_vis['CRVAL1']
-    step_vis = head_vis['CDELT1']
-    unit_vis = head_vis['CUNIT1']
+    n_j2 = len(cube_j2)
+    l0_j2 = head_j2['CRVAL1']
+    step_j2 = head_j2['CDELT1']
+#    unit_j2 = head_j2['CUNIT1']
     
-    if unit_vis == 'Angstrom':
-       lam_vis = np.arange(n_vis)*step_vis + l0_vis
-    else:
-        if unit_vis == 'nm':
-            lam_vis = np.arange(n_vis)*step_vis*10 + l0_vis*10    
+#    if unit_j2 == 'Angstrom':
+    lam_j2 = np.arange(n_j2)*step_j2 + l0_j2
+#    else:
+#        if unit_j2 == 'nm':
+#            lam_j2 = np.arange(n_j2)*step_j2*10 + l0_j2*10    
 
-    imin_oii = (np.abs(lam_vis - min_oii)).argmin()
-    imax_oii = (np.abs(lam_vis - max_oii)).argmin()
+    imin_oii = (np.abs(lam_j2 - min_oii)).argmin()
+    imax_oii = (np.abs(lam_j2 - max_oii)).argmin()
 
-    lam4 = lam_vis[imin_oii : imax_oii]
-    cube4 = cube_vis[imin_oii : imax_oii]
-    sig4 = sig_vis[imin_oii : imax_oii]
+    lam4 = lam_j2[imin_oii : imax_oii]
+    cube4 = cube_j2[imin_oii : imax_oii]
+#    sig4 = sig_j2[imin_oii : imax_oii]
 
 else:
 
@@ -119,19 +141,19 @@ else:
     imax_oii = (np.abs(lam - max_oii)).argmin()
 
     lam4 = lam[imin_oii : imax_oii]
-    cube4 = cube[imin_oii : imax_oii]
-    sig4 = sig[imin_oii : imax_oii]
+    cube4 = cube_j1[imin_oii : imax_oii]
+#    sig4 = sig_j1[imin_oii : imax_oii]
 
 #junta as janelas
 lam_fin1 = np.append(lam1,lam2)
 cube_fin1 = np.append(cube1,cube2)
-sig_fin1 = np.append(sig1,sig2)
+#sig_fin1 = np.append(sig1,sig2)
 lam_fin2 = np.append(lam_fin1, lam3)
 cube_fin2 = np.append(cube_fin1, cube3)
-sig_fin2 = np.append(sig_fin1, sig3)
+#sig_fin2 = np.append(sig_fin1, sig3)
 lam_fin = np.append(lam_fin2, lam4)
 cube_fin = np.append(cube_fin2, cube4)
-sig = np.append(sig_fin2, sig4)
+#sig = np.append(sig_fin2, sig4)
 
 #declara as função gaussianas e os contínuos que serão ajustados aos dados
 def gauss(x, a, b, c, d, e, f, g, h, i, j, k, l):
@@ -197,7 +219,7 @@ def gauss(x, a, b, c, d, e, f, g, h, i, j, k, l):
 guess = np.array([10, 10, 10, 10, cen_oiii1, 60*cen_oiii1/(2.99798*1e5), 100, 1000, 1000, 1000, 1000, 1000])
 
 #ajuste das funções aos dados    
-p, pv = curve_fit(gauss, lam_fin, cube_fin, guess, sig)
+p, pv = curve_fit(gauss, lam_fin, cube_fin, guess)
 
 #parâmetros do ajuste
 a1 = p[0]

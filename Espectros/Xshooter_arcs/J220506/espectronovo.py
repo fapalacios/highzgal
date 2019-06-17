@@ -289,8 +289,9 @@ ratio2 = math.log10(amp_nii1/amp_halpha)
 ratio1 = str(ratio1)
 ratio2 = str(ratio2)
 
-line_ratio = open('razao_de_linha.txt', 'w')
-line_ratio.write('[OIII]/Hbeta = ' + ratio1 + ' [NII]/Halpha = ' +ratio2)
+file_path = '/home/felicia/UFRGS/IC/'
+line_ratio = open(file_path + 'razao_de_linha.txt', 'a',)
+line_ratio.write('[OIII]/Hbeta = ' + ratio1 + ' [NII]/Halpha = ' +ratio2 + '\n')
 line_ratio.close()
 
 
