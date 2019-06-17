@@ -197,7 +197,7 @@ def gauss(x, a, b, c, d, e, f, g, h, i, j, k, l):
 guess = np.array([10, 10, 10, 10, cen_oiii1, 40*cen_oiii1/(2.99798*1e5), 1000, 1000, 1000, 1000, 1000, 1000])
 
 #ajuste das funções aos dados    
-p, pv = curve_fit(gauss, lam_fin, cube_fin, guess, sig)
+p, pv = curve_fit(gauss, lam_fin, cube_fin, guess, sig, bounds = [0, np.inf])
 
 #parâmetros do ajuste
 a1 = p[0]
@@ -289,10 +289,11 @@ ratio2 = math.log10(amp_nii1/amp_halpha)
 ratio1 = str(ratio1)
 ratio2 = str(ratio2)
 
-file_path = '/home/felicia/UFRGS/IC/'
+file_path = '/graduacao/fpalacios/UFRGS/IC/'
 line_ratio = open(file_path + 'razao_de_linha.txt', 'a',)
-line_ratio.write('[OIII]/Hbeta = ' + ratio1 + ' [NII]/Halpha = ' +ratio2 + '\n')
+line_ratio.write(ratio1 + ratio2 + '\n')
 line_ratio.close()
+
 
 
 
