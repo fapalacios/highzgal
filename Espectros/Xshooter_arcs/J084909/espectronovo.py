@@ -247,7 +247,7 @@ plt.plot(lam1,cube1)
 x = lam1
 y = (a1 + amp_oiii1*(1./math.sqrt(2.*math.pi))*np.exp((-((x - center_oiii1)/sig_oiii1)**2.)/2.)/sig_oiii1
      + amp_oiii2*(1./math.sqrt(2.*math.pi))*np.exp((-((x - center_oiii2)/sigma_oiii2)**2.)/2.)/sigma_oiii2)
-plt.ylim(-5, 400)
+plt.ylim(-5, 500)
 plt.plot(x,y, color = 'red')
 plt.title('OIII Window')
 fig.savefig('plot_oiii.png')
@@ -265,6 +265,7 @@ fig2.savefig('plot_hbeta.png')
 fig3 = plt.figure()
 plt.subplot(4,1,3)
 plt.plot(lam3, cube3)
+plt.ylim(-5, 500)
 x2 = lam3
 y2 = (a2 + amp_halpha*(1./math.sqrt(2.*math.pi))*np.exp((-((x2 - center_halpha)/sigma_halpha)**2.)/2.)/sigma_halpha
      + amp_nii1*(1./math.sqrt(2.*math.pi))*np.exp((-((x2 - center_nii1)/sigma_nii1)**2.)/2.)/sigma_nii1
@@ -292,8 +293,8 @@ ratio1 = str(ratio1)
 ratio2 = str(ratio2)
 
 file_path = '/graduacao/fpalacios/UFRGS/IC/'
-line_ratio = open(file_path + 'razao_de_linha.txt', 'a',)
-line_ratio.write(ratio1 + ratio2 + '\n')
+line_ratio = open('razao_de_linha.txt', 'w',)
+line_ratio.write(ratio2 + ', ' + ratio1 + '\n')
 line_ratio.close()
 
 

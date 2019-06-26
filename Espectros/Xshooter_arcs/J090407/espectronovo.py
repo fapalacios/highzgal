@@ -290,7 +290,7 @@ ratio1 = str(ratio1)
 ratio2 = str(ratio2)
 
 file_path = '/graduacao/fpalacios/UFRGS/IC/'
-line_ratio = open(file_path + 'razao_de_linha.txt', 'a',)
-line_ratio.write(ratio1 + ratio2 + '\n')
+line_ratio = open('razao_de_linha.txt', 'w',)
+line_ratio.write(ratio2 + ', ' + ratio1 + '\n')
 line_ratio.close()
 
