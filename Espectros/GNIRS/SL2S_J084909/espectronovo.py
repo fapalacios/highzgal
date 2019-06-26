@@ -6,7 +6,7 @@ import math
 import copy
 
 #comprimentos de onda de laboratório
-lam_oiii1 = 5006.843                                       
+lam_oiii1 = 5006.843
 lam_oiii2 = 4958.911
 lam_hbeta = 4861.333
 lam_halpha = 6562.819
@@ -114,7 +114,7 @@ lam_fin = np.append(lam_fin2, lam4)
 cube_fin = np.append(cube_fin2, cube4)
 
 #declara as função gaussianas e os contínuos que serão ajustados aos dados
-def gauss(x, a, b, c, d, e, f, g, h, i, j, k, l, m):
+def gauss(x, a, b, c, d, e, f, g, h, i, j, k, l):
     step_min_oiii = np.heaviside(lam_fin - min_oiii, 0)
     step_max_oiii = np. heaviside(lam_fin - max_oiii, 0)
     step_min_hbeta = np.heaviside(lam_fin - min_hbeta, 0)
@@ -123,62 +123,64 @@ def gauss(x, a, b, c, d, e, f, g, h, i, j, k, l, m):
     step_max_halpha = np.heaviside(lam_fin - max_nii, 0)
     step_min_oii = np.heaviside(lam_fin - min_oii, 0)
     step_max_oii = np.heaviside(lam_fin - max_oii, 0)
-    
+
     r1 = a*(step_min_oiii - step_max_oiii)
     r2 = b*(step_min_halpha - step_max_halpha)
     r3 = c*(step_min_oii - step_max_oii)
     r4 = d*(step_min_hbeta - step_max_hbeta)
-    
+
     w_oiii1 = (x - e)/f
     alpha_oiii1 = (1./math.sqrt(2.*math.pi))*np.exp((-w_oiii1**2.)/2.)*g
-    
+
     cenoiii2 = lam_oiii2 + (lam_oiii2/lam_oiii1)*(e - lam_oiii1)
     sigoiii2 = (lam_oiii2/lam_oiii1)*f
     ampoiii2 = g/3.
     w_oiii2 = (x - cenoiii2)/sigoiii2
     alpha_oiii2 = (1./math.sqrt(2.*math.pi))*np.exp((-w_oiii2**2.)/2.)*ampoiii2
-    
+
     cenhbeta = lam_hbeta + (lam_hbeta/lam_oiii1)*(e - lam_oiii1)
     sighbeta = (lam_hbeta/lam_oiii1)*f
     w_hbeta = (x - cenhbeta)/sighbeta
     alpha_hbeta = (1./math.sqrt(2.*math.pi))*np.exp((-w_hbeta**2.)/2.)*h
-    
+
     cenhalpha = lam_halpha + (lam_halpha/lam_oiii1)*(e - lam_oiii1)
     sighalpha = (lam_halpha/lam_oiii1)*f
     w_halpha = (x - cenhalpha)/sighalpha
     alpha_halpha = (1./math.sqrt(2.*math.pi))*np.exp((-w_halpha**2.)/2.)*i
-    
+
     cennii1 = lam_nii1 + (lam_nii1/lam_oiii1)*(e - lam_oiii1)
     signii1 = (lam_nii1/lam_oiii1)*f
     w_nii1 = (x - cennii1)/signii1
     alpha_nii1 = (1./math.sqrt(2.*math.pi))*np.exp((-w_nii1**2.)/2.)*j
-    
-    #cennii2 = lam_nii2 + (lam_nii2/lam_oiii1)*(e - lam_oiii1)
-    cennii2 = m
+
+    cennii2 = lam_nii2 + (lam_nii2/lam_oiii1)*(e - lam_oiii1)
     signii2 = (lam_nii2/lam_oiii1)*f
     ampnii2 = j/3.
     w_nii2 = (x - cennii2)/signii2
     alpha_nii2 = (1./math.sqrt(2.*math.pi))*np.exp((-w_nii2**2.)/2.)*ampnii2
-    
+
     cenoii1 = lam_oii1 + (lam_oii1/lam_oiii1)*(e - lam_oiii1)
     sigoii1 = (lam_oii1/lam_oiii1)*f
     w_oii1 = (x - cenoii1)/sigoii1
     alpha_oii1 = (1./math.sqrt(2.*math.pi))*np.exp((-w_oii1**2.)/2.)*k
-    
+
     cenoii2 = lam_oii2 + (lam_oii2/lam_oiii1)*(e - lam_oiii1)
     sigoii2 = (lam_oii2/lam_oiii1)*f
     w_oii2 = (x - cenoii2)/sigoii2
     alpha_oii2 = (1./math.sqrt(2.*math.pi))*np.exp((-w_oii2**2.)/2.)*l
-    
-    return (r1 + r2 + r3 + r4+ (alpha_oiii1/f) + (alpha_oiii2/sigoiii2) + (alpha_hbeta/sighbeta)
-+ (alpha_halpha/sighalpha) + (alpha_nii1/signii1) + (alpha_nii2/signii2) + (alpha_oii1/sigoii1) 
-+ (alpha_oii2/sigoii2))
 
-#chute inicial dos parâmetros 
-guess = np.array([10, 10, 10, 10, cen_oiii1, 60*cen_oiii1/(2.99798*1e5), 1000, 1000, 1000, 1000, 1000, 1000, 16685])
+    return (r1 + r2 + r3 + r4+ (alpha_oiii1/f) + (alpha_oiii2/sigoiii2)
+            + (alpha_hbeta/sighbeta) + (alpha_halpha/sighalpha)
+            + (alpha_nii1/signii1) + (alpha_nii2/signii2) + (alpha_oii1/sigoii1)
+            + (alpha_oii2/sigoii2))
 
-#ajuste das funções aos dados    
-p, pv = curve_fit(gauss, lam_fin, cube_fin, guess, bounds = ([0,0,0,0,0,0,0,0,0,0,0,0, 16683], [np.inf,np.inf,np.inf,np.inf,np.inf,np.inf,np.inf,np.inf,np.inf,np.inf,np.inf,np.inf,16687.5]))
+#chute inicial dos parâmetros
+guess = np.array([10, 10, 10, 10, cen_oiii1, 200*cen_oiii1/(2.99798*1e5),
+                  500, 500, 500, 500, 500, 500])
+
+#ajuste das funções aos dados
+p, pv = curve_fit(gauss, lam_fin, cube_fin, guess, bounds=([0]*4 + [12720] + [0]*7,
+                                                        [np.inf]*4 + [12740] + [np.inf]*7))
 
 #parâmetros do ajuste
 a1 = p[0]
@@ -193,14 +195,13 @@ amp_halpha = p[8]
 amp_nii1 = p[9]
 amp_oii1 = p[10]
 amp_oii2 = p[11]
-center_nii2 = p[12]
 
 #outros parâmetros
 center_oiii2 = lam_oiii2 + (lam_oiii2/lam_oiii1)*(center_oiii1 - lam_oiii1)
 center_hbeta = lam_hbeta + (lam_hbeta/lam_oiii1)*(center_oiii1 - lam_oiii1)
 center_halpha = lam_halpha + (lam_halpha/lam_oiii1)*(center_oiii1 - lam_oiii1)
 center_nii1 = lam_nii1 + (lam_nii1/lam_oiii1)*(center_oiii1 - lam_oiii1)
-#center_nii2 = lam_nii2 + (lam_nii2/lam_oiii1)*(center_oiii1 - lam_oiii1)
+center_nii2 = lam_nii2 + (lam_nii2/lam_oiii1)*(center_oiii1 - lam_oiii1)
 center_oii1 = lam_oii1 + (lam_oii1/lam_oiii1)*(center_oiii1 - lam_oiii1)
 center_oii2 = lam_oii2 + (lam_oii2/lam_oiii1)*(center_oiii1 - lam_oiii1)
 
@@ -288,6 +289,6 @@ line_ratio.close()
 
 
 
-    
-    
-    
+
+
+

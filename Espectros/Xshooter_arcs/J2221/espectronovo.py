@@ -61,8 +61,8 @@ cube1 = cube[imin_oiii : imax_oiii]
 sig1 = sig[imin_oiii : imax_oiii]
 
 #cria janela do H beta
-min_hbeta = cen_hbeta - 50
-max_hbeta = cen_hbeta + 50
+min_hbeta = cen_hbeta - 20
+max_hbeta = cen_hbeta + 20
 
 imin_hbeta = (np.abs(lam - min_hbeta)).argmin()
 imax_hbeta = (np.abs(lam - max_hbeta)).argmin()
