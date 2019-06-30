@@ -201,15 +201,15 @@ p, pv = curve_fit(gauss, lam_fin, cube_fin, guess, sig, bounds = [0, np.inf])
 
 #parâmetros do ajuste
 a1 = p[0]
-a2 = p[1]
+a2 = -10
 a3 = p[2]
 a4 = p[3]
 center_oiii1 = p[4]
 sig_oiii1 = copy.deepcopy(p[5])
 amp_oiii1 = p[6]
-amp_hbeta = p[7]
-amp_halpha = p[8]
-amp_nii1 = p[9]
+amp_hbeta = 100
+amp_halpha = 10
+amp_nii1 = 10
 amp_oii1 = p[10]
 amp_oii2 = p[11]
 
@@ -290,8 +290,8 @@ ratio1 = str(ratio1)
 ratio2 = str(ratio2)
 
 file_path = '/graduacao/fpalacios/UFRGS/IC/'
-line_ratio = open(file_path + 'razao_de_linha.txt', 'a',)
-line_ratio.write(ratio1 + ratio2 + '\n')
+line_ratio = open('razao_de_linha.txt', 'w',)
+line_ratio.write(ratio1 + ' ' + ratio2)
 line_ratio.close()
 
 

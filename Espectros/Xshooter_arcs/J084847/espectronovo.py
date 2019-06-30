@@ -209,7 +209,7 @@ sig_oiii1 = copy.deepcopy(p[5])
 amp_oiii1 = p[6]
 amp_hbeta = p[7]
 amp_halpha = p[8]
-amp_nii1 = p[9]
+amp_nii1 = 50
 amp_oii1 = p[10]
 amp_oii2 = p[11]
 
@@ -263,6 +263,7 @@ fig2.savefig('plot_hbeta.png')
 fig3 = plt.figure()
 plt.subplot(4,1,3)
 plt.plot(lam3, cube3)
+plt.ylim(-5, 200)
 x2 = lam3
 y2 = (a2 + amp_halpha*(1./math.sqrt(2.*math.pi))*np.exp((-((x2 - center_halpha)/sigma_halpha)**2.)/2.)/sigma_halpha
      + amp_nii1*(1./math.sqrt(2.*math.pi))*np.exp((-((x2 - center_nii1)/sigma_nii1)**2.)/2.)/sigma_nii1
@@ -290,8 +291,8 @@ ratio1 = str(ratio1)
 ratio2 = str(ratio2)
 
 file_path = '/graduacao/fpalacios/UFRGS/IC/'
-line_ratio = open(file_path + 'razao_de_linha.txt', 'a',)
-line_ratio.write(ratio1 + ratio2 + '\n')
+line_ratio = open('razao_de_linha.txt', 'w',)
+line_ratio.write(ratio2 + ', ' +ratio1 + '\n')
 line_ratio.close()
 
 
