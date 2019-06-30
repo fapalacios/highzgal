@@ -12,6 +12,7 @@ for t in data:
 x1 = np.linspace(-2, 0.25)
 
 plt.plot(x1 , 0.61/(x1 - 0.02 - 0.1833*2.5 )+ 1.2 + 0.03*2.5)
+plt.arrow(0, 0, 0, 0.05, width=0.02,color='black')
 plt.xlim(-2, 1)
 plt.ylim(-1, 1.5)
 plt.xlabel('LOG([NII]/Ha)')
