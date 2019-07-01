@@ -18,6 +18,11 @@ lam_oii2 = 3728.815
 #abre os arquivos .fits
 file_ir = 'J021247_1_SCI_SLIT_FLUX_MERGE1D_NIR.fits'
 file_vis = 'J021247_1_SCI_SLIT_FLUX_MERGE1D_VIS.fits'
+file_trans = 'Telluric_Standard_TELL_SLIT_FLUX_MERGE1D_NIR_TRA.fits'
+
+#extrai os dados da transmissão
+#trans = fits.open(file_trans)
+#trans_data = trans[0].data
 
 #extrai o cabeçalho, os dados e os erros
 hdu = fits.open(file_ir)
