@@ -239,73 +239,64 @@ p5 = p[5]*(299792.58/p[4])
 print (p)
 
 #plot dos espectros e ajustes
-fig = plt.figure()
-plt.subplot(4,1,1)
+#plt.figure(figsize=(2,4))
+fig = plt.figure(figsize=(6,14))
+plt.subplot(3,2,1)
 plt.plot(lam1,cube1)
 x = lam1
 y = (a1 + amp_oiii1*(1./math.sqrt(2.*math.pi))*np.exp((-((x - center_oiii1)/sig_oiii1)**2.)/2.)/sig_oiii1
      + amp_oiii2*(1./math.sqrt(2.*math.pi))*np.exp((-((x - center_oiii2)/sigma_oiii2)**2.)/2.)/sigma_oiii2)
-plt.ylim(-5, 400)
+plt.xlim(center_oiii1 - 40, center_oiii1 + 40)
+plt.ylim(80, 275)
 plt.plot(x,y, color = 'red')
-plt.title('OIII Window')
-fig.savefig('plot_oiii.png')
+plt.title('[OIII]5007\u212b')
+#fig.savefig('plot_oiii.png')
 
-fig2 = plt.figure()
-plt.subplot(4,1,2)
+#plt.figure(figsize=(2,4))
+plt.subplot(3,2,2)
 plt.plot(lam2, cube2)
 x1 = lam2
 y1 = (a4 + amp_hbeta*(1./math.sqrt(2.*math.pi))*np.exp((-((x1 - center_hbeta)/sigma_hbeta)**2.)/2.)/sigma_hbeta )
 plt.plot(x1,y1, color = 'red')
-plt.title('H Beta Window')
-fig2.savefig('plot_hbeta.png')
+plt.xlim(center_hbeta - 35, center_hbeta + 35)
+plt.ylim(0, 180)
+plt.title('H\u03b2')
+#fig2.savefig('plot_hbeta.png')
 
 
-fig3 = plt.figure()
-plt.subplot(4,1,3)
-plt.plot(lam3, cube3)
-x2 = lam3
-y2 = (a2 + amp_halpha*(1./math.sqrt(2.*math.pi))*np.exp((-((x2 - center_halpha)/sigma_halpha)**2.)/2.)/sigma_halpha
-     + amp_nii1*(1./math.sqrt(2.*math.pi))*np.exp((-((x2 - center_nii1)/sigma_nii1)**2.)/2.)/sigma_nii1
-     + amp_nii2*(1./math.sqrt(2.*math.pi))*np.exp((-((x2 - center_nii2)/sigma_nii2)**2.)/2.)/sigma_nii2)
-plt.plot(x2,y2, color = 'red')
-plt.title('NII Window')
-fig3.savefig('plot_nii.png')
+##plt.figure(figsize=(2,4))
+#plt.subplot(3,2,3)
+#plt.plot(lam3, cube3)
+#x2 = lam3
+#y2 = (a2 + amp_halpha*(1./math.sqrt(2.*math.pi))*np.exp((-((x2 - center_halpha)/sigma_halpha)**2.)/2.)/sigma_halpha
+#     + amp_nii1*(1./math.sqrt(2.*math.pi))*np.exp((-((x2 - center_nii1)/sigma_nii1)**2.)/2.)/sigma_nii1
+#     + amp_nii2*(1./math.sqrt(2.*math.pi))*np.exp((-((x2 - center_nii2)/sigma_nii2)**2.)/2.)/sigma_nii2)
+#plt.xlim(center_halpha - 20, center_halpha + 20)
+#plt.ylim(0, 20)
+#plt.plot(x2,y2, color = 'red')
+#plt.title('H\u03b1')
+##fig3.savefig('plot_nii.png')
+#
+##plt.figure(figsize=(2,4))
+#plt.subplot(3,2,4)
+#plt.plot(lam3, cube3)
+#x2 = lam3
+#y2 = (a2 + amp_halpha*(1./math.sqrt(2.*math.pi))*np.exp((-((x2 - center_halpha)/sigma_halpha)**2.)/2.)/sigma_halpha
+#     + amp_nii1*(1./math.sqrt(2.*math.pi))*np.exp((-((x2 - center_nii1)/sigma_nii1)**2.)/2.)/sigma_nii1
+#     + amp_nii2*(1./math.sqrt(2.*math.pi))*np.exp((-((x2 - center_nii2)/sigma_nii2)**2.)/2.)/sigma_nii2)
+#plt.xlim(center_nii1 - 20, center_nii1 + 20)
+#plt.ylim(0, 20)
+#plt.plot(x2,y2, color = 'red')
+#plt.title('[NII]')
 
-fig4 = plt.figure()
-plt.subplot(4,1,4)
+#plt.figure(figsize=(2,4))
+plt.subplot(3,2,3)
 plt.plot(lam4,cube4)
 x3 = lam4
 y3 = (a3 + amp_oii1*(1./math.sqrt(2.*math.pi))*np.exp((-((x3 - center_oii1)/sigma_oii1)**2.)/2.)/sigma_oii1
      + amp_oii2*(1./math.sqrt(2.*math.pi))*np.exp((-((x3 - center_oii2)/sigma_oii2)**2.)/2.)/sigma_oii2)
+plt.xlim(center_oii1 - 25, center_oii2 + 25)
+plt.ylim(60, 160)
 plt.plot(x3,y3, color = 'red')
 plt.title('OII Window')
-fig4.savefig('plot_oii.png')
-
-plt.show()
-
-#razões de fluxo
-ratio1 = math.log10(amp_oiii1/amp_hbeta)
-ratio2 = math.log10(amp_nii1/amp_halpha)
-ratio1 = str(ratio1)
-ratio2 = str(ratio2)
-
-file_path = '/graduacao/fpalacios/UFRGS/IC/'
-line_ratio = open('razao_de_linha.txt', 'w',)
-line_ratio.write(ratio2 + ', ' + ratio1 + '\n')
-line_ratio.close()
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    
-    
+#fig4.savefig('plot_oii.png')
