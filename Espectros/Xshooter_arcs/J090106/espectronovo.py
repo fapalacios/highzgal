@@ -208,8 +208,8 @@ center_oiii1 = p[4]
 sig_oiii1 = copy.deepcopy(p[5])
 amp_oiii1 = p[6]
 amp_hbeta = 100
-amp_halpha = p[8]
-amp_nii1 = p[9]
+amp_halpha = 50
+amp_nii1 = 10
 amp_oii1 = p[10]
 amp_oii2 = p[11]
 
@@ -309,3 +309,4 @@ line_ratio.close()
     
     
     
+z
