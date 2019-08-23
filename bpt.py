@@ -2,7 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 #J2221
-plt.scatter(-1.1929410082494034, 0.42539790997307675, marker='^')
+plt.scatter(-1.1929410082494034, 0.42539790997307675)
+plt.arrow(-1.1929410082494034, 0.42539790997307675, 0, 0.25, shape='full')
 #J021247
 plt.scatter(0.0, 0.8064502355915049, marker='^')
 #J021411
