@@ -13,10 +13,15 @@ from matplotlib import pyplot as plt
 hdu_list = fits.open('J2221_SCI_SLIT_FLUX_MERGE2D_NIR.fits')
 
 image_data = hdu_list[0].data
-x = np.arange(0, len(image_data[0])) + 1000000
+header = hdu_list[0].header
+l_0 = header['CRVAL1']
+step = header['CDELT1']
 
-image_data[74] = x
+
+x =  np.arange(0, len(image_data[0]))*step*10 + l_0*10
+x_pos = np.arange(0, len(x), 5)
+x_label = x[: : 10]
 
 plt.imshow(image_data, vmin=-3.118e-18, vmax=1.548e-18)
-plt.colorbar()
-plt.xlim(11385 - 50, 11385 + 50)
+plt.xticks(x_pos, x_label)
+plt.xlim(16772 - 50, 16772 + 50)
