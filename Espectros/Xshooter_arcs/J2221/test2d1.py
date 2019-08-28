@@ -16,12 +16,15 @@ image_data = hdu_list[0].data
 header = hdu_list[0].header
 l_0 = header['CRVAL1']
 step = header['CDELT1']
-
+lim = pxoiii1 = (16772 - l_0*10)/(step*10)
 
 x =  np.arange(0, len(image_data[0]))*step*10 + l_0*10
-x_pos = np.arange(0, len(x), 5)
-x_label = x[: : 10]
+x_pos = np.arange(0, len(x), 20)
+x_label = x[: : 20]
 
-plt.imshow(image_data, vmin=-3.118e-18, vmax=1.548e-18)
+imoiii = plt.imshow(image_data, vmin=-3.118e-18, vmax=1.548e-18)
+plt.title('OIII')
 plt.xticks(x_pos, x_label)
-plt.xlim(16772 - 50, 16772 + 50)
+plt.xlim(lim - 50, lim + 50)
+plt.ylim(55, 20)
+imoiii.axes.get_yaxis().set_visible(False)
