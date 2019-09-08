@@ -1,0 +1,12 @@
+J2221 - NII not ok
+J021247 - OIII ok
+J021411 - OIII ok H alpha +/-
+J023251 - NII not ok
+J084847 - NII not ok
+J084909 - NII not ok
+J084959 - NII not ok
+J090106 - OIII ok
+J090407 - NII ?
+J095921 - ok
+J220506 - NII not ok
+J221326 - H beta +/-
