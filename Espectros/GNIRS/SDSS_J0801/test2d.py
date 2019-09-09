@@ -9,20 +9,27 @@ Created on Fri Aug  9 11:59:46 2019
 from astropy.io import fits
 import numpy as np
 from matplotlib import pyplot as plt
+from scipy import ndimage
 
 hdu_list = fits.open('j2_2d.fits')
 
 image_data = hdu_list[1].data
 header = hdu_list[1].header
-l_0 = header['CRVAL1']
-step = header['CDELT1']
+l_0 = header['CRVAL2']
+step = header['CDELT2']
+
+lim = pxoiii1 = (12610 - l_0)/(step)
 
 
-x =  np.arange(0, len(image_data[0]))*step + l_0
-x_pos = np.arange(0, len(x), 5)
-x_label = x[: : 10]
+rotated_img = ndimage.rotate(image_data, -90)
 
-plt.imshow(image_data, vmin=-3.118e-18, vmax=1.548e-18)
-plt.ylim(400, 450)
-#plt.xticks(x_pos, x_label)
-#plt.xlim(16772 - 50, 16772 + 50)
+x =  np.arange(0, len(rotated_img[0]))*step + l_0
+x_pos = np.arange(0, len(x), 20)
+x_label = x[: : 20]
+x_label = np.around(x_label)
+
+oiii1img = plt.imshow(rotated_img, vmin=-0.172, vmax=0.119)
+plt.xticks(x_pos, x_label)
+plt.xlim(lim - 50, lim)
+plt.ylim(20, 115)
+oiii1img.axes.get_yaxis().set_visible(False)
